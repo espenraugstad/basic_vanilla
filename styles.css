@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;400;600;700;900&display=swap');
+body{
+    font-family: 'Inter', sans-serif;
+    width: 90%;
+    margin: 0 auto;
+}
+
+#linkedinlink{
+    text-decoration: none;
+    color: black;
+    
+}
+
+#linkedin{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border: 1px solid black;
+    width: fit-content;
+    padding: 1rem;
+}
+
+#linkedin>img{
+    height: 50px;
+    margin-right: 1rem;
+}
