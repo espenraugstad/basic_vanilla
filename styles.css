@@ -24,3 +24,23 @@ body{
     height: 50px;
     margin-right: 1rem;
 }
+
+#listOfSuperHeroes{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    max-width: 2000px;
+}
+
+@media (max-width: 1192px){
+    #listOfSuperHeroes{
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 796px){
+    #listOfSuperHeroes{
+        grid-template-columns: 1fr;
+        align-items: center;
+        justify-items: center;
+    }
+}

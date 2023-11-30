@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="favicon_io/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicon_io/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="favicon_io/favicon-16x16.png"
+    />
+    <link rel="manifest" href="favicon_io/site.webmanifest" />
+    <script type="module" src="components/navbar.js"></script>
+    <script type="module" src="components/superHero.js"></script>
+  </head>
+  <body>
+    <nav-bar></nav-bar>
+    <h1>Examples</h1>
+    <p>
+      In this example, you can see a list of superheroes from the group <em id="squadName"></em>, located in <em id="town"></em>. Each hero is it's own custom component. The data for each superhero is found <a href="https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json">here</a>, and is from <a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON">this tutorial on JSON</a>.
+    </p>
+    <div id="listOfSuperHeroes"></div>
+
+    <template id="hero">
+      <style>
+        .ident {
+          writing-mode: vertical-lr;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 3rem;
+          font-weight: 700;
+          background-color: lightblue;
+        }
+        .hero {
+          border: 1px solid black;
+          margin: 1rem;
+          display: grid;
+          grid-template-columns: 0.1fr 1fr;
+          gap: 1rem;
+          max-width: 500px;
+          min-width: fit-content;
+          min-height: 400px;
+        }
+
+        .info {
+          display: flex;
+          flex-direction: column;
+          
+          justify-content: space-between;
+          padding: 0 1rem;
+        }
+
+        .secretId{
+            color: lightgrey;
+        }
+      </style>
+      <div class="hero">
+        <div class="ident">HERO</div>
+        <div class="info">
+          <div>
+            <span><slot name="name">NAME</slot></span>
+            <slot name="age">Age</slot>
+            <strong>Powers:</strong>
+            <slot name="powers">POWERS</slot>
+          </div>
+          <div class="secretId">
+            <slot name="secret">Secret Identity</slot>
+          </div>
+          
+        </div>
+      </div>
+    </template>
+  </body>
+  <script>
+    const squadName = document.getElementById('squadName');
+    const town = document.getElementById('town');
+    const listOfSuperHeroes = document.getElementById("listOfSuperHeroes");
+    window.onload = getHeroes();
+    
+    async function getHeroes() {
+      let url =
+        "https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json";
+      try {
+        let heroRes = await fetch(url);
+        if (heroRes.status === 200) {
+          let heroes = await heroRes.json();
+          console.log(heroes);
+          squadName.innerText = heroes.squadName;
+          town.innerText = heroes.homeTown;
+          listHeroes(heroes.members);
+        } else {
+          console.log(heroRes);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function listHeroes(heroes) {
+      for (hero of heroes) {
+        console.log(hero);
+        let heroElement = document.createElement("super-hero");
+        let powersList = "";
+        for (power of hero.powers) {
+          powersList += `<li>${power}</li>`;
+        }
+        heroElement.innerHTML = `
+            <h2 slot="name">${hero.name}</h2>
+            <p slot="age">Age: ${hero.age}</p>
+            <ul slot="powers">${powersList}</ul>
+            <p slot="secret">Secret identity: ${hero.secretIdentity}<p>`;
+        listOfSuperHeroes.appendChild(heroElement);
+      }
+    }
+  </script>
+</html>
